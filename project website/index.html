@@ -65,14 +65,19 @@ body {
   color: #a0a0a0;
   letter-spacing: 0.3px;
 }
+.hero-tags-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 24px auto 0;
+  width: fit-content;
+}
 .hero-tags {
   display: flex;
-  justify-content: center;
   gap: 12px;
-  margin-top: 14px;
   flex-wrap: wrap;
 }
-.hero-tags:first-of-type { margin-top: 24px; }
 .hero-tag {
   padding: 6px 18px;
   border-radius: 20px;
@@ -327,17 +332,19 @@ body {
 <section class="hero">
   <h1>What's on your Plate?</h1>
   <p class="tagline">GPT-4o + YOLOv8 + SAM &mdash; LLM-driven food analysis</p>
-  <div class="hero-tags">
-    <span class="hero-tag tag-technique">LLMs</span>
-    <span class="hero-tag tag-technique">Applied AI</span>
-    <span class="hero-tag tag-technique">Computer Vision</span>
-  </div>
-  <div class="hero-tags">
-    <span class="hero-tag tag-domain-primary">Health</span>
-    <span class="hero-tag tag-domain-secondary">Entertainment</span>
-  </div>
-  <div class="hero-tags">
-    <span class="hero-tag tag-audience">AI Startups</span>
+  <div class="hero-tags-wrap">
+    <div class="hero-tags">
+      <span class="hero-tag tag-technique">LLMs</span>
+      <span class="hero-tag tag-technique">Applied AI</span>
+      <span class="hero-tag tag-technique">Computer Vision</span>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag tag-domain-primary">Health</span>
+      <span class="hero-tag tag-domain-secondary">Entertainment</span>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag tag-audience">AI Startups</span>
+    </div>
   </div>
 </section>
 
