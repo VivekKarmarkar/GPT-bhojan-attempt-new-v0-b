@@ -65,6 +65,21 @@ body {
   color: #a0a0a0;
   letter-spacing: 0.3px;
 }
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.hero-tag {
+  padding: 6px 18px;
+  border: 1px solid #f9731640;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #f97316;
+  letter-spacing: 0.3px;
+}
 
 /* ─── 2. Video ─────────────────────────────────────── */
 .video-section {
@@ -309,6 +324,11 @@ body {
 <section class="hero">
   <h1>What's on your Plate?</h1>
   <p class="tagline">GPT-4o + YOLOv8 + SAM &mdash; LLM-driven food analysis</p>
+  <div class="hero-tags">
+    <span class="hero-tag">LLMs</span>
+    <span class="hero-tag">Applied AI</span>
+    <span class="hero-tag">Computer Vision</span>
+  </div>
 </section>
 
 <!-- ════════════════════════════════════════════════════ -->
