@@ -1,0 +1,17 @@
+sample_food_1.png = {Palak Paneer, Garlic/Plain Naan}
+sample_food_2.png = {Roti/Chapati, Rice/Biryani, Chicken Curry, Chicken Curry, Lime, Onion}
+sample_food_3.png = {Sambar, Chutney, 3xWada}
+sample_food_4.png = {Sambar, 2xChutney, 2xIdli}
+sample_food_5.png = {Utthapam, Sambar, Chutney}
+sample_food_6.png = {Subji, Curd, Dal, Roti/Paratha, Rice}
+sample_food_7.png = {Rasmalai}
+sample_food_8.png = {Gajar Halwa}
+sample_food_9.png = {3+ Pizza Slice}
+sample_food_10.png = {7xModak}
+sample_food_11.png = {Banana Pudding}
+sample_food_12.png = {Avocadoa Egg Toast (or similar)}
+sample_food_13.png = {Soup, Sandwich}
+sample_food_14.png = {4xSalmon}
+sample_food_15.png = {Gajar Halwa}
+sample_food_16.png = {Rasmalai}
+sample_food_17.png = {Gajar Halwa}

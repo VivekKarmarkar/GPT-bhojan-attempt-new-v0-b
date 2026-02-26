@@ -1,0 +1,16 @@
+venv/
+models/
+*.pth
+*.pt
+.env
+.env.local
+__pycache__/
+*.pyc
+food_library/
+favorite_meals/
+.claude/
+.playwright-mcp/
+.DS_Store
+*.log
+media/video/
+eval/visual_results/

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's on your Plate?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Global ───────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0f1019;
+  color: #e0e0e0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Layout helpers ───────────────────────────────── */
+.section {
+  padding: 80px 24px;
+}
+.section-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.section-header {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-bottom: 48px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+.section-text p {
+  margin-bottom: 1.4em;
+  color: #c8c8c8;
+}
+.section-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── 1. Hero ──────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 120px 24px 80px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  color: #e0e0e0;
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+.hero .tagline {
+  margin-top: 16px;
+  font-size: 17px;
+  color: #a0a0a0;
+  letter-spacing: 0.3px;
+}
+
+/* ─── 2. Video ─────────────────────────────────────── */
+.video-section {
+  padding: 0 24px 80px;
+}
+.video-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: min(56.25%, 540px); /* 16:9 capped */
+  height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #23263a;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+}
+.video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* ─── 3. Introduction ──────────────────────────────── */
+/* uses .section + .section-inner + .section-text */
+
+/* ─── 4. Architecture ──────────────────────────────── */
+.arch-section {
+  padding: 80px 24px;
+}
+.arch-section .section-header {
+  max-width: 700px;
+  margin: 0 auto 48px;
+}
+
+/* ── Architecture diagram (namespaced) ── */
+.arch-diagram {
+  max-width: 1100px;
+  margin: 0 auto 56px;
+}
+.arch-diagram .arch-legend {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 0 24px 12px;
+  flex-wrap: wrap;
+}
+.arch-diagram .legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.arch-diagram .legend-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arch-diagram .legend-emoji { font-size: 22px; }
+.arch-diagram .legend-name { font-weight: 700; font-size: 18px; }
+.arch-diagram .legend-model { color: #e0e0e0; font-weight: 700; font-size: 18px; }
+
+.arch-diagram .arch-canvas {
+  width: 100%;
+  aspect-ratio: 980 / 480;
+  max-height: 480px;
+}
+.arch-diagram .arch-canvas svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.arch-diagram .node rect {
+  cursor: pointer;
+  transition: stroke-width 0.15s, filter 0.15s;
+}
+.arch-diagram .node:hover rect { stroke-width: 2.8; }
+.arch-diagram .node-emoji { font-size: 17px; pointer-events: none; }
+.arch-diagram .node-label { font-size: 12.5px; font-weight: 700; pointer-events: none; }
+.arch-diagram .step-num { font-size: 9px; pointer-events: none; fill: #555; }
+
+.arch-diagram .arch-detail {
+  background: #161822;
+  border-top: 1px solid #2e3140;
+  border-radius: 0 0 12px 12px;
+  padding: 14px 24px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.arch-diagram .arch-detail .d-icon { font-size: 26px; flex-shrink: 0; }
+.arch-diagram .arch-detail .d-name {
+  color: #f97316;
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+.arch-diagram .arch-detail .d-desc {
+  color: #bbb;
+  font-size: 13px;
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* ─── 5. Results slideshow ─────────────────────────── */
+.slideshow-wrap {
+  max-width: 800px;
+  margin: 0 auto 56px;
+  position: relative;
+  user-select: none;
+}
+.slideshow-wrap img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.slideshow-wrap img.active {
+  position: relative;
+  opacity: 1;
+}
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(15, 16, 25, 0.7);
+  border: 1px solid #2e3140;
+  color: #a0a0a0;
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 2;
+}
+.slide-btn:hover {
+  background: rgba(15, 16, 25, 0.95);
+  color: #e0e0e0;
+}
+.slide-prev { left: 12px; }
+.slide-next { right: 12px; }
+
+/* ─── 6. Findings ──────────────────────────────────── */
+.findings-figure {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.findings-figure img {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+.findings-figure .caption {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #a0a0a0;
+}
+
+/* ─── 7. GitHub footer ─────────────────────────────── */
+.github-footer {
+  text-align: center;
+  padding: 60px 24px 80px;
+}
+.github-footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #a0a0a0;
+  font-size: 16px;
+}
+.github-footer svg { fill: currentColor; }
+
+/* ─── Video thumbnail fallback ─────────────────────── */
+.video-thumb {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000 center/cover no-repeat;
+  text-decoration: none;
+}
+.video-thumb .play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px; height: 48px;
+  background: rgba(255,0,0,0.85);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.video-thumb:hover .play-btn { background: #f00; }
+.video-thumb .play-btn::after {
+  content: '';
+  display: block;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+
+/* ─── Responsive ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 80px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .arch-section { padding: 60px 16px; }
+  .section-header { font-size: 26px; margin-bottom: 36px; }
+  .arch-diagram .arch-legend { gap: 24px; }
+  .arch-diagram .arch-detail {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  .arch-diagram .arch-detail .d-name { min-width: unset; }
+  .slide-btn { width: 36px; height: 36px; font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1. HERO                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="hero">
+  <h1>What's on your Plate?</h1>
+  <p class="tagline">GPT-4o + YOLOv8 + SAM &mdash; LLM-driven food analysis</p>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 2. VIDEO                                            -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="video-section">
+  <div class="video-wrap" id="video-container"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3. INTRODUCTION                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Introduction</h2>
+    <div class="section-text">
+      <p>Upload a photo of your meal. Three AI models — the Brain, the Eyes, and the Scissors — work together to find every item on your plate, cut each one out at the pixel level, and score the meal on five dimensions: health, satiety, bloat, tastiness, and addiction potential.</p>
+      <p>The Brain is GPT-4o. It understands what food looks like, what it's called, and how nutritious it is. The Eyes are YOLOv8. They scan the image and find where things are. The Scissors are SAM (Segment Anything Model). They trace precise outlines around whatever you point them at. None of these models can do the full job alone — the Eyes can find objects but can't name them, the Brain can name food but can't locate it spatially, and the Scissors can cut anything but don't know what's worth cutting. The pipeline coordinates all three so that each one compensates for what the others can't do.</p>
+      <p>The system prompt is tuned for Indian cuisine, and the evaluation test suite uses Indian food images — but the underlying architecture is model-agnostic. Swap the prompt and the test set, and the same pipeline works on any cuisine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 4. ARCHITECTURE                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="arch-section">
+  <h2 class="section-header">Architecture</h2>
+
+  <div class="arch-diagram">
+    <!-- Legend -->
+    <div class="arch-legend">
+      <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x1F9E0;</span><span class="legend-name" style="color:#f97316">Brain</span></div><span class="legend-model">GPT-4o</span></div>
+      <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x1F441;&#xFE0F;</span><span class="legend-name" style="color:#38bdf8">Eyes</span></div><span class="legend-model">YOLOv8</span></div>
+      <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x2702;&#xFE0F;</span><span class="legend-name" style="color:#38bdf8">Scissors</span></div><span class="legend-model">SAM</span></div>
+    </div>
+
+    <!-- SVG Diagram -->
+    <div class="arch-canvas">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 480" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+            <circle cx="15" cy="15" r="0.5" fill="#1a1c2a"/>
+          </pattern>
+          <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f97316"/>
+          </marker>
+          <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#38bdf8"/>
+          </marker>
+          <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#4ade80"/>
+          </marker>
+        </defs>
+
+        <rect width="980" height="480" fill="url(#dots)"/>
+
+        <!-- Row 1 paths -->
+        <path id="path-1-2" d="M 130,120 C 155,110 165,72 195,65" fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5" marker-end="url(#arrowOrange)"/>
+        <path id="path-1-3" d="M 130,140 C 155,150 165,188 195,195" fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4" marker-end="url(#arrowBlue)"/>
+        <path id="path-2-4" d="M 345,65 C 375,72 385,110 415,120" fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5" marker-end="url(#arrowOrange)"/>
+        <path id="path-3-4" d="M 345,195 C 375,188 385,150 415,140" fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4" marker-end="url(#arrowBlue)"/>
+        <path id="path-4-5" d="M 565,130 C 590,130 610,130 630,130" fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4" marker-end="url(#arrowGreen)"/>
+        <path id="path-5-6" d="M 780,130 C 800,130 815,130 830,130" fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4" marker-end="url(#arrowBlue)"/>
+
+        <!-- Turn + Row 2 paths -->
+        <path id="path-6-7" d="M 910,170 C 910,220 910,280 910,340" fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5" marker-end="url(#arrowOrange)"/>
+        <path id="path-7-8" d="M 830,380 C 805,380 790,380 780,380" fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4" marker-end="url(#arrowGreen)"/>
+        <path id="path-8-9" d="M 630,380 C 605,380 585,380 565,380" fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4" marker-end="url(#arrowGreen)"/>
+
+        <!-- Row 1 nodes -->
+        <g class="node" data-step="1" onclick="selectStep(1)">
+          <rect x="15" y="100" width="115" height="60" rx="12" fill="#88888812" stroke="#888" stroke-width="1.5"/>
+          <text class="step-num" x="25" y="112">1</text>
+          <text class="node-emoji" x="72" y="124" text-anchor="middle" fill="#aaa">&#x1F4F7;</text>
+          <text class="node-label" x="72" y="146" text-anchor="middle" fill="#aaa">Upload Photo</text>
+        </g>
+        <g class="node" data-step="2" onclick="selectStep(2)">
+          <rect x="195" y="38" width="150" height="58" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+          <text class="step-num" x="205" y="50">2</text>
+          <text class="node-emoji" x="270" y="62" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+          <text class="node-label" x="270" y="82" text-anchor="middle" fill="#f97316">Analyze Plate</text>
+        </g>
+        <g class="node" data-step="3" onclick="selectStep(3)">
+          <rect x="195" y="168" width="150" height="58" rx="12" fill="#38bdf810" stroke="#38bdf8" stroke-width="1.5"/>
+          <text class="step-num" x="205" y="180">3</text>
+          <text class="node-emoji" x="270" y="192" text-anchor="middle" fill="#38bdf8">&#x1F441;&#xFE0F;</text>
+          <text class="node-label" x="270" y="212" text-anchor="middle" fill="#38bdf8">Draw Boxes</text>
+        </g>
+        <g class="node" data-step="4" onclick="selectStep(4)">
+          <rect x="415" y="100" width="150" height="60" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+          <text class="step-num" x="425" y="112">4</text>
+          <text class="node-emoji" x="490" y="124" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+          <text class="node-label" x="490" y="146" text-anchor="middle" fill="#f97316">Classify Each Box</text>
+        </g>
+        <g class="node" data-step="5" onclick="selectStep(5)">
+          <rect x="630" y="100" width="150" height="60" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+          <text class="step-num" x="640" y="112">5</text>
+          <text class="node-emoji" x="705" y="124" text-anchor="middle" fill="#4ade80">&#x1F504;</text>
+          <text class="node-label" x="705" y="146" text-anchor="middle" fill="#4ade80" font-size="11.5">Remove Duplicates</text>
+        </g>
+        <g class="node" data-step="6" onclick="selectStep(6)">
+          <rect x="830" y="100" width="150" height="60" rx="12" fill="#38bdf810" stroke="#38bdf8" stroke-width="1.5"/>
+          <text class="step-num" x="840" y="112">6</text>
+          <text class="node-emoji" x="905" y="124" text-anchor="middle" fill="#38bdf8">&#x2702;&#xFE0F;</text>
+          <text class="node-label" x="905" y="146" text-anchor="middle" fill="#38bdf8" font-size="11.5">Cut Precise Shapes</text>
+        </g>
+        <text x="930" y="260" font-size="20" fill="#333" text-anchor="middle">&#x21B5;</text>
+
+        <!-- Row 2 nodes -->
+        <g class="node" data-step="7" onclick="selectStep(7)">
+          <rect x="830" y="350" width="150" height="60" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+          <text class="step-num" x="840" y="362">7</text>
+          <text class="node-emoji" x="905" y="374" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+          <text class="node-label" x="905" y="396" text-anchor="middle" fill="#f97316">Verify A vs B</text>
+        </g>
+        <g class="node" data-step="8" onclick="selectStep(8)">
+          <rect x="630" y="352" width="150" height="56" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+          <text class="step-num" x="640" y="364">8</text>
+          <text class="node-emoji" x="705" y="374" text-anchor="middle" fill="#4ade80">&#x1F4A1;</text>
+          <text class="node-label" x="705" y="394" text-anchor="middle" fill="#4ade80" font-size="11.5">Brightness Check</text>
+        </g>
+        <g class="node" data-step="9" onclick="selectStep(9)">
+          <rect x="415" y="350" width="150" height="60" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+          <text class="step-num" x="425" y="362">9</text>
+          <text class="node-emoji" x="490" y="374" text-anchor="middle" fill="#4ade80">&#x1F3A8;</text>
+          <text class="node-label" x="490" y="396" text-anchor="middle" fill="#4ade80">Color &amp; Label</text>
+        </g>
+        <text x="400" y="385" font-size="14" fill="#4ade80" text-anchor="end" opacity="0.6">&#x2714; done</text>
+
+        <!-- Animated particles -->
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0s"><mpath href="#path-1-2"/></animateMotion></circle>
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="1.25s"><mpath href="#path-1-2"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0s"><mpath href="#path-1-3"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="1.25s"><mpath href="#path-1-3"/></animateMotion></circle>
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s"><mpath href="#path-2-4"/></animateMotion></circle>
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="1.55s"><mpath href="#path-2-4"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s"><mpath href="#path-3-4"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2.5s" repeatCount="indefinite" begin="1.55s"><mpath href="#path-3-4"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="0.5s"><mpath href="#path-4-5"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.5s"><mpath href="#path-4-5"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="0.6s"><mpath href="#path-5-6"/></animateMotion></circle>
+        <circle r="4" fill="#38bdf8" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.6s"><mpath href="#path-5-6"/></animateMotion></circle>
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="3s" repeatCount="indefinite" begin="0.7s"><mpath href="#path-6-7"/></animateMotion></circle>
+        <circle r="4" fill="#f97316" filter="url(#particleGlow)"><animateMotion dur="3s" repeatCount="indefinite" begin="2.2s"><mpath href="#path-6-7"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="0.8s"><mpath href="#path-7-8"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.8s"><mpath href="#path-7-8"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="0.9s"><mpath href="#path-8-9"/></animateMotion></circle>
+        <circle r="3" fill="#4ade80" filter="url(#particleGlow)"><animateMotion dur="2s" repeatCount="indefinite" begin="1.9s"><mpath href="#path-8-9"/></animateMotion></circle>
+      </svg>
+    </div>
+
+    <!-- Detail bar -->
+    <div class="arch-detail">
+      <div class="d-icon" id="d-icon"></div>
+      <div class="d-name" id="d-name">Click any step to see how it works</div>
+      <div class="d-desc" id="d-desc"></div>
+    </div>
+  </div>
+
+  <!-- Architecture text (Segment B) -->
+  <div class="section-inner">
+    <div class="section-text">
+      <p>The pipeline processes each image through nine steps.</p>
+      <p>The Brain analyzes the whole plate first. It looks at the full image in one pass, names every dish, and rates the meal on five scales. This big-picture understanding becomes context for everything that follows.</p>
+      <p>At the same time, the Eyes scan the image and draw tight bounding boxes around every object they find. The Eyes don't know what's food and what isn't — a fork, a bowl rim, and a pile of rice all get boxes. The sorting happens next.</p>
+      <p>Both streams converge when the Brain classifies each box. It examines the cropped region alongside the full plate photo and the description it wrote earlier. It makes a visual judgment: does this crop isolate a single food item, or is it junk? Boxes covering more than 90% of the image are skipped automatically as a cost guard — they're obviously just the whole photo again.</p>
+      <p>After classification, duplicate boxes are removed. If two boxes with the same label overlap by more than half their area, the tighter one is kept. Two of the same food item in different locations both survive — only overlapping duplicates on the same item get collapsed.</p>
+      <p>The Scissors then take over. They analyze the full image once upfront, then for each surviving box, they produce three candidate outlines. The one with the highest confidence score is selected. The Scissors don't know what they're cutting — they're trained to segment any object you point them at.</p>
+      <p>But the Scissors sometimes trace the wrong thing — the bowl instead of the food inside it. So the Brain gets a second opinion. It sees two images: the cut-out region (A) and everything around it (B), both on black backgrounds. It picks which one actually shows the food. When the Brain says "wrong cut," the Scissors don't redo the entire image — they only flip their work inside that one box.</p>
+      <p>The selected region then passes a brightness check. At least 100 pixels need to be brighter than a minimum threshold. If the cut-out is too dark, it's likely empty or not a food item, and it's quietly dropped.</p>
+      <p>Finally, surviving items are overlaid on the original image with translucent color masks, bounding boxes, and labels. The annotated image, the five-score radar chart, and the item list are returned to the frontend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 5. RESULTS                                          -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner" style="max-width:800px">
+    <h2 class="section-header">Results</h2>
+
+    <div class="slideshow-wrap" id="slideshow">
+      <img src="results_slideshow/sample_food_3_annotated.png" alt="Sample food analysis 3" class="active">
+      <img src="results_slideshow/sample_food_6_annotated.png" alt="Sample food analysis 6">
+      <img src="results_slideshow/sample_food_7_annotated.png" alt="Sample food analysis 7">
+      <img src="results_slideshow/sample_food_11_annotated.png" alt="Sample food analysis 11">
+      <img src="results_slideshow/sample_food_17_annotated.png" alt="Sample food analysis 17">
+      <button class="slide-btn slide-prev" onclick="slideNav(-1)" aria-label="Previous image">&#x2039;</button>
+      <button class="slide-btn slide-next" onclick="slideNav(1)" aria-label="Next image">&#x203A;</button>
+    </div>
+  </div>
+
+  <div class="section-inner">
+    <div class="section-text">
+      <p>The pipeline was evaluated against a 17-image test suite of Indian meals, ranging from simple single-item plates to complex multi-dish meals with five or more items.</p>
+      <p>90% identification accuracy — 28 out of 31 detections were correct across all images that produced output. Of the 14 images where the Eyes detected objects, 11 had zero wrong identifications. The remaining 3 images each had exactly one misidentified item.</p>
+      <p>The segmentation quality was consistent. The Scissors' box-prompted outlines closely followed food boundaries, and the Brain's A/B verification step caught cases where the Scissors initially traced a container edge instead of the food surface.</p>
+      <p>Three images — Modak, Salmon, and Rasmalai — produced no output at all. The Eyes found zero bounding boxes for these items. These represent the detection model's limits on certain food presentations and are excluded from the accuracy calculation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6. FINDINGS                                         -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Findings</h2>
+
+    <div class="findings-figure">
+      <img src="key_result.png" alt="Pie chart showing error breakdown: correct identifications vs Sambar bias vs no output">
+      <p class="caption">Error breakdown across the 17-image test suite — correct identifications, Sambar-bias misclassifications, and no-output cases.</p>
+    </div>
+
+    <div class="section-text">
+      <p>All three misidentifications followed the same pattern. The Brain defaulted to "Sambar" when it encountered an unfamiliar curry bowl.</p>
+      <p>This is not a random failure mode. It reveals a systematic bias — when the Brain lacks confidence in a visual classification, it falls back to the most common South Indian curry in its training data. The errors were not spread across different food categories or different failure mechanisms. They clustered on a single label, applied to a single visual archetype: a round bowl of brown liquid.</p>
+      <p>This finding points to a clear next step. A fine-tuned classifier trained on a curated dataset of Indian food categories could replace the Brain's zero-shot classification, eliminating the Sambar bias while preserving the Brain's role in verification and full-plate analysis where its generalist knowledge is an advantage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 7. GITHUB FOOTER                                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<footer class="github-footer">
+  <span>
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    GitHub
+  </span>
+</footer>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<script>
+// ── Video embed (iframe on http/https, thumbnail fallback on file://) ──
+(function() {
+  const container = document.getElementById('video-container');
+  const videoId = 'y4ACvU-SSX0';
+  if (location.protocol === 'file:') {
+    container.innerHTML =
+      '<a class="video-thumb" href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" rel="noopener" ' +
+      'style="background-image:url(https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg)">' +
+      '<div class="play-btn"></div></a>';
+  } else {
+    container.innerHTML =
+      '<iframe src="https://www.youtube.com/embed/' + videoId + '" ' +
+      'title="What\'s on your Plate? — Project Video" ' +
+      'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+      'allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"></iframe>';
+  }
+})();
+
+// ── Architecture diagram: step data + selection ──────
+const stepData = {
+  1: { icon: "\u{1F4F7}", name: "Upload Photo",
+       desc: "You upload a photo of your meal. That\u2019s it \u2014 one photo, and the pipeline does the rest." },
+  2: { icon: "\u{1F9E0}", name: "Analyze Plate",
+       desc: "What\u2019s on this plate, and how good is it for you? The Brain looks at the whole plate in one pass \u2014 names every dish and rates it on five scales: how healthy, how satiating, how bloating, how tasty, and how addictive. No item-by-item work yet; this is the big-picture read." },
+  3: { icon: "\u{1F441}\uFE0F", name: "Draw Boxes",
+       desc: "Where is everything? The Eyes scan the entire image and draw tight boxes around every object they find. They don\u2019t know what\u2019s food and what isn\u2019t \u2014 a fork, a bowl, and a pile of rice all get boxes. The sorting happens next." },
+  4: { icon: "\u{1F9E0}", name: "Classify Each Box",
+       desc: "The Eyes found a dozen things \u2014 but which of those are actually food? The Brain examines each box alongside the full plate. It makes a visual judgment: does this box isolate one food item, or is it junk like a fork handle or a plate rim? The Brain also receives the box\u2019s size relative to the whole image \u2014 not as a rule, but as context. A box covering most of the image is obviously just the whole photo again, so those are skipped before the Brain even sees them." },
+  5: { icon: "\u{1F504}", name: "Remove Duplicates",
+       desc: "Did the Eyes draw two boxes on the same thing? If two boxes share more than half their area and have the same name, keep the tighter one. Two of the same food item in different locations both survive \u2014 only overlapping duplicates on the same item get collapsed. This prevents redundancy." },
+  6: { icon: "\u2702\uFE0F", name: "Cut Precise Shapes",
+       desc: "Now the Scissors take over. For each surviving box, they trace the exact edges of whatever object is inside \u2014 not a rough rectangle, but a pixel-level outline. The Scissors don\u2019t know what they\u2019re cutting; they\u2019re trained to segment any object you point them at. They analyze the full image once upfront, then produce three candidate outlines per box. The one with the highest confidence score is selected." },
+  7: { icon: "\u{1F9E0}", name: "Verify A vs B",
+       desc: "The Scissors cut something out \u2014 but did they cut the right thing? Sometimes they trace the bowl instead of the food inside it. So the Brain gets a second opinion: it sees two images side by side \u2014 the cut-out region (A) and everything around it (B), both on black backgrounds. It picks which one is actually the food item. When the Brain says \u201Cwrong cut,\u201D the Scissors don\u2019t redo the entire image \u2014 they only flip their work inside that one box." },
+  8: { icon: "\u{1F4A1}", name: "Brightness Check",
+       desc: "Is there actually something here? The selected region is checked for visible content \u2014 specifically, at least 100 pixels need to be brighter than a minimum threshold. If the cut-out is too dark, it\u2019s likely not a food item. The item is quietly dropped." },
+  9: { icon: "\u{1F3A8}", name: "Color & Label",
+       desc: "Food items correctly identified by the Brain, seen by the Eyes, and cut by the Scissors are shown with colorful masks and labels." }
+};
+
+let selectedStep = null;
+
+function selectStep(n) {
+  document.querySelectorAll('.arch-diagram .node rect').forEach(r => {
+    r.setAttribute('stroke-width', '1.5');
+    r.removeAttribute('filter');
+  });
+
+  selectedStep = n;
+  const s = stepData[n];
+
+  const node = document.querySelector('.arch-diagram .node[data-step="' + n + '"] rect');
+  if (node) {
+    node.setAttribute('stroke-width', '3');
+    node.setAttribute('filter', 'url(#nodeGlow)');
+  }
+
+  document.getElementById('d-icon').textContent = s.icon;
+  document.getElementById('d-name').textContent = s.name;
+  document.getElementById('d-desc').textContent = s.desc;
+}
+
+// ── Results slideshow ────────────────────────────────
+(function() {
+  const wrap = document.getElementById('slideshow');
+  const imgs = wrap.querySelectorAll('img');
+  let current = 0;
+  let timer;
+
+  function goTo(idx) {
+    imgs[current].classList.remove('active');
+    current = (idx + imgs.length) % imgs.length;
+    imgs[current].classList.add('active');
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), 6000);
+  }
+
+  window.slideNav = function(dir) {
+    goTo(current + dir);
+    resetTimer();
+  };
+
+  resetTimer();
+})();
+</script>
+
+</body>
+</html>

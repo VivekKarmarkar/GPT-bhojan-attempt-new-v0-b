@@ -1,0 +1,11 @@
+flask>=3.1
+openai>=2.24
+python-dotenv>=1.2
+ultralytics>=8.4
+opencv-python-headless>=4.13
+Pillow>=12.1
+numpy>=2.2
+matplotlib>=3.10
+torch>=2.10
+torchvision>=0.25
+git+https://github.com/facebookresearch/segment-anything.git

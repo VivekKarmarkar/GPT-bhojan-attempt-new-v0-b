@@ -1,0 +1,385 @@
+[
+  {
+    "image": "sample_food_1",
+    "ground_truth": [
+      "Palak Paneer",
+      "Garlic/Plain Naan"
+    ],
+    "gt_count": 2,
+    "detected_items": [
+      "Palak Paneer",
+      "Naan"
+    ],
+    "detected_count": 2,
+    "description": "The plate features naan paired with palak paneer, served alongside slices of cucumber and onion.",
+    "scores": {
+      "addiction": 6,
+      "bloat": 5,
+      "health": 7,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 19.0
+  },
+  {
+    "image": "sample_food_2",
+    "ground_truth": [
+      "Roti/Chapati",
+      "Rice/Biryani",
+      "Chicken Curry",
+      "Chicken Curry",
+      "Lime",
+      "Onion"
+    ],
+    "gt_count": 6,
+    "detected_items": [
+      "Chicken curry",
+      "Chicken Curry",
+      "Sambar",
+      "Rice",
+      "Lime"
+    ],
+    "detected_count": 5,
+    "description": "A traditional Indian thali featuring a variety of dishes including curries, rice, and flatbreads, complemented by raw onion and lime on a steel plate.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 5,
+      "health": 6,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 32.2
+  },
+  {
+    "image": "sample_food_3",
+    "ground_truth": [
+      "Sambar",
+      "Chutney",
+      "Wada",
+      "Wada",
+      "Wada"
+    ],
+    "gt_count": 5,
+    "detected_items": [
+      "Sambar",
+      "Medu Vada",
+      "Medu Vada",
+      "Medu Vada",
+      "Coconut chutney"
+    ],
+    "detected_count": 5,
+    "description": "The plate features crispy medu vada served with sambar and coconut chutney, typical staples in South Indian cuisine.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 5,
+      "health": 6,
+      "satiety": 8,
+      "tasty": 8
+    },
+    "elapsed_s": 26.2
+  },
+  {
+    "image": "sample_food_4",
+    "ground_truth": [
+      "Sambar",
+      "Chutney",
+      "Chutney",
+      "Idli",
+      "Idli"
+    ],
+    "gt_count": 5,
+    "detected_items": [
+      "Sambar",
+      "Sambar",
+      "Coconut chutney"
+    ],
+    "detected_count": 3,
+    "description": "The plate features a traditional South Indian breakfast with idlis served alongside sambar, coconut chutney, and a spicy chutney.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 3,
+      "health": 8,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 28.8
+  },
+  {
+    "image": "sample_food_5",
+    "ground_truth": [
+      "Uttapam",
+      "Sambar",
+      "Chutney"
+    ],
+    "gt_count": 3,
+    "detected_items": [
+      "Sambar",
+      "Coconut chutney",
+      "Uttapam"
+    ],
+    "detected_count": 3,
+    "description": "The plate features a South Indian uttapam topped with tomatoes and a dollop of butter, accompanied by sambar and coconut chutney.",
+    "scores": {
+      "addiction": 6,
+      "bloat": 5,
+      "health": 7,
+      "satiety": 8,
+      "tasty": 8
+    },
+    "elapsed_s": 34.9
+  },
+  {
+    "image": "sample_food_6",
+    "ground_truth": [
+      "Subji",
+      "Curd",
+      "Dal",
+      "Roti/Paratha",
+      "Rice"
+    ],
+    "gt_count": 5,
+    "detected_items": [
+      "Sambar",
+      "Dal",
+      "Potato stir-fry",
+      "Roti"
+    ],
+    "detected_count": 4,
+    "description": "A traditional Indian thali featuring a variety of dishes including rice with dal, potato stir-fry, roti, papad, and several accompaniments.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 5,
+      "health": 7,
+      "satiety": 9,
+      "tasty": 9
+    },
+    "elapsed_s": 26.7
+  },
+  {
+    "image": "sample_food_7",
+    "ground_truth": [
+      "Rasmalai"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Rasmalai"
+    ],
+    "detected_count": 1,
+    "description": "The plate contains Rasmalai, a classic Indian dessert made of soft paneer balls soaked in sweet, saffron-infused milk and garnished with nuts and rose petals.",
+    "scores": {
+      "addiction": 8,
+      "bloat": 4,
+      "health": 5,
+      "satiety": 7,
+      "tasty": 9
+    },
+    "elapsed_s": 26.7
+  },
+  {
+    "image": "sample_food_8",
+    "ground_truth": [
+      "Gajar Halwa"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Gajar ka Halwa"
+    ],
+    "detected_count": 1,
+    "description": "The plate features a rich serving of Gajar ka Halwa, a traditional Indian dessert made with grated carrots, milk, sugar, and garnished with nuts.",
+    "scores": {
+      "addiction": 8,
+      "bloat": 3,
+      "health": 5,
+      "satiety": 7,
+      "tasty": 9
+    },
+    "elapsed_s": 30.3
+  },
+  {
+    "image": "sample_food_9",
+    "ground_truth": [
+      "Pizza Slice",
+      "Pizza Slice",
+      "Pizza Slice"
+    ],
+    "gt_count": 3,
+    "detected_items": [
+      "Pepperoni Pizza Slice"
+    ],
+    "detected_count": 1,
+    "description": "The plate contains a classic pepperoni pizza with cheese and tomato sauce on a thick crust, garnished with fresh herbs.",
+    "scores": {
+      "addiction": 8,
+      "bloat": 7,
+      "health": 4,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 44.8
+  },
+  {
+    "image": "sample_food_10",
+    "ground_truth": [
+      "Modak",
+      "Modak",
+      "Modak",
+      "Modak",
+      "Modak",
+      "Modak",
+      "Modak"
+    ],
+    "gt_count": 7,
+    "detected_items": [],
+    "detected_count": 0,
+    "description": "The plate features traditional Indian modaks, a sweet dumpling made with a rice flour exterior and a coconut-jaggery filling.",
+    "scores": {
+      "addiction": 6,
+      "bloat": 3,
+      "health": 7,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 10.6
+  },
+  {
+    "image": "sample_food_11",
+    "ground_truth": [
+      "Banana Pudding"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Banana pudding"
+    ],
+    "detected_count": 1,
+    "description": "A serving of banana pudding with layers of vanilla wafers and creamy pudding.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 5,
+      "health": 4,
+      "satiety": 6,
+      "tasty": 8
+    },
+    "elapsed_s": 14.5
+  },
+  {
+    "image": "sample_food_12",
+    "ground_truth": [
+      "Avocado Egg Toast"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Open-faced sandwich"
+    ],
+    "detected_count": 1,
+    "description": "The plate features an open-faced sandwich topped with a fried egg, avocado, and greens on toast, combined with bacon and a spread.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 3,
+      "health": 6,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 61.8
+  },
+  {
+    "image": "sample_food_13",
+    "ground_truth": [
+      "Soup",
+      "Sandwich"
+    ],
+    "gt_count": 2,
+    "detected_items": [
+      "Soup",
+      "Sandwich"
+    ],
+    "detected_count": 2,
+    "description": "The plate features a creamy soup garnished with herbs and a sandwich filled with sliced meat and melted cheese.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 5,
+      "health": 6,
+      "satiety": 8,
+      "tasty": 8
+    },
+    "elapsed_s": 38.5
+  },
+  {
+    "image": "sample_food_14",
+    "ground_truth": [
+      "Salmon",
+      "Salmon",
+      "Salmon",
+      "Salmon"
+    ],
+    "gt_count": 4,
+    "detected_items": [],
+    "detected_count": 0,
+    "description": "The plate features juicy, seasoned salmon fillets garnished with fresh herbs.",
+    "scores": {
+      "addiction": 7,
+      "bloat": 2,
+      "health": 8,
+      "satiety": 8,
+      "tasty": 9
+    },
+    "elapsed_s": 18.6
+  },
+  {
+    "image": "sample_food_15",
+    "ground_truth": [
+      "Gajar Halwa"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Carrot Halwa"
+    ],
+    "detected_count": 1,
+    "description": "The dish is a vibrant red halwa made from grated carrots, garnished with whole cashews and almonds.",
+    "scores": {
+      "addiction": 6,
+      "bloat": 4,
+      "health": 5,
+      "satiety": 7,
+      "tasty": 8
+    },
+    "elapsed_s": 20.4
+  },
+  {
+    "image": "sample_food_16",
+    "ground_truth": [
+      "Rasmalai"
+    ],
+    "gt_count": 1,
+    "detected_items": [],
+    "detected_count": 0,
+    "description": "The plate contains rasmalai, a popular Indian dessert consisting of soft cheese patties soaked in a flavored milk sauce topped with nuts.",
+    "scores": {
+      "addiction": 8,
+      "bloat": 5,
+      "health": 4,
+      "satiety": 6,
+      "tasty": 9
+    },
+    "elapsed_s": 12.5
+  },
+  {
+    "image": "sample_food_17",
+    "ground_truth": [
+      "Gajar Halwa"
+    ],
+    "gt_count": 1,
+    "detected_items": [
+      "Gajar ka Halwa"
+    ],
+    "detected_count": 1,
+    "description": "A visually appealing bowl of gajar ka halwa topped with cashew nuts and sugar crystals.",
+    "scores": {
+      "addiction": 8,
+      "bloat": 4,
+      "health": 6,
+      "satiety": 7,
+      "tasty": 9
+    },
+    "elapsed_s": 15.6
+  }
+]

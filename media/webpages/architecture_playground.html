@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Architectural Walkthrough — GPT Bhojan</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f1019;color:#e0e0e0;font-family:system-ui,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* Title — centered, always one line */
+#titlewrap{text-align:center;padding:14px 20px 4px;flex-shrink:0}
+#titlewrap h1{font-size:38px;font-weight:900;color:#e0e0e0;letter-spacing:1px;line-height:1;white-space:nowrap}
+
+/* Legend — one row, evenly spaced */
+#legend{display:flex;justify-content:center;gap:60px;padding:4px 28px 2px;flex-shrink:0}
+.legend-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+.legend-top{display:flex;align-items:center;gap:8px}
+.legend-emoji{font-size:22px}
+.legend-name{font-weight:800;font-size:19px}
+.legend-model{color:#e0e0e0;font-weight:800;font-size:19px}
+
+/* Controls */
+
+/* SVG canvas */
+#canvas{flex:1;display:flex;align-items:center;justify-content:center;padding:0 16px;min-height:0}
+#canvas svg{width:100%;height:100%}
+
+/* Node styling */
+.node rect{cursor:pointer;transition:stroke-width 0.15s,filter 0.15s}
+.node:hover rect{stroke-width:2.8}
+.node-emoji{font-size:17px;pointer-events:none}
+.node-label{font-size:12.5px;font-weight:700;pointer-events:none}
+.step-num{font-size:9px;pointer-events:none;fill:#555}
+
+/* Detail bar */
+#detail{background:#161822;border-top:1px solid #2e3140;padding:12px 24px;min-height:70px;display:flex;align-items:center;gap:18px;flex-shrink:0}
+#detail .icon{font-size:26px;flex-shrink:0}
+#detail .name{color:#f97316;font-weight:700;font-size:15px;min-width:160px;flex-shrink:0}
+#detail .desc{color:#bbb;font-size:13px;line-height:1.5;flex:1}
+</style>
+</head>
+<body>
+
+<div id="titlewrap">
+  <h1>Architectural Walkthrough</h1>
+</div>
+
+<div id="legend">
+  <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x1F9E0;</span><span class="legend-name" style="color:#f97316">Brain</span></div><span class="legend-model">GPT-4o</span></div>
+  <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x1F441;&#xFE0F;</span><span class="legend-name" style="color:#38bdf8">Eyes</span></div><span class="legend-model">YOLOv8</span></div>
+  <div class="legend-item"><div class="legend-top"><span class="legend-emoji">&#x2702;&#xFE0F;</span><span class="legend-name" style="color:#38bdf8">Scissors</span></div><span class="legend-model">SAM</span></div>
+</div>
+
+<div id="canvas">
+<svg id="diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 480" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background dot pattern -->
+    <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="0.5" fill="#1a1c2a"/>
+    </pattern>
+
+    <!-- Particle glow filter -->
+    <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Node selection glow -->
+    <filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f97316"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4ade80"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="980" height="480" fill="url(#dots)"/>
+
+  <!-- Row labels -->
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- CONNECTION PATHS — Row 1 (left to right)           -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- 1 → 2  Upload → Analyze Plate (orange dashed) -->
+  <path id="path-1-2" d="M 130,120 C 155,110 165,72 195,65"
+        fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5"
+        marker-end="url(#arrowOrange)"/>
+
+  <!-- 1 → 3  Upload → Draw Boxes (blue solid) -->
+  <path id="path-1-3" d="M 130,140 C 155,150 165,188 195,195"
+        fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4"
+        marker-end="url(#arrowBlue)"/>
+
+  <!-- 2 → 4  Analyze → Classify (orange dashed) -->
+  <path id="path-2-4" d="M 345,65 C 375,72 385,110 415,120"
+        fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5"
+        marker-end="url(#arrowOrange)"/>
+
+  <!-- 3 → 4  Draw Boxes → Classify (blue solid) -->
+  <path id="path-3-4" d="M 345,195 C 375,188 385,150 415,140"
+        fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4"
+        marker-end="url(#arrowBlue)"/>
+
+  <!-- 4 → 5  Classify → Dedup (green dotted) -->
+  <path id="path-4-5" d="M 565,130 C 590,130 610,130 630,130"
+        fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4"
+        marker-end="url(#arrowGreen)"/>
+
+  <!-- 5 → 6  Dedup → Cut Shapes (blue solid) -->
+  <path id="path-5-6" d="M 780,130 C 800,130 815,130 830,130"
+        fill="none" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.4"
+        marker-end="url(#arrowBlue)"/>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- CONNECTION PATHS — Turn down + Row 2 (right→left)  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- 6 → 7  Cut Shapes → Verify (orange dashed, curves down) -->
+  <path id="path-6-7" d="M 910,170 C 910,220 910,280 910,340"
+        fill="none" stroke="#f97316" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="7,5"
+        marker-end="url(#arrowOrange)"/>
+
+  <!-- 7 → 8  Verify → Brightness (green dotted, goes left) -->
+  <path id="path-7-8" d="M 830,380 C 805,380 790,380 780,380"
+        fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4"
+        marker-end="url(#arrowGreen)"/>
+
+  <!-- 8 → 9  Brightness → Color & Label (green dotted, goes left) -->
+  <path id="path-8-9" d="M 630,380 C 605,380 585,380 565,380"
+        fill="none" stroke="#4ade80" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="3,4"
+        marker-end="url(#arrowGreen)"/>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ROW 1 NODES — Detection Phase                      -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- Step 1: Upload Photo -->
+  <g class="node" data-step="1" onclick="selectStep(1)">
+    <rect x="15" y="100" width="115" height="60" rx="12" fill="#88888812" stroke="#888" stroke-width="1.5"/>
+    <text class="step-num" x="25" y="112">1</text>
+    <text class="node-emoji" x="72" y="124" text-anchor="middle" fill="#aaa">&#x1F4F7;</text>
+    <text class="node-label" x="72" y="146" text-anchor="middle" fill="#aaa">Upload Photo</text>
+  </g>
+
+  <!-- Step 2: Analyze Plate -->
+  <g class="node" data-step="2" onclick="selectStep(2)">
+    <rect x="195" y="38" width="150" height="58" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+    <text class="step-num" x="205" y="50">2</text>
+    <text class="node-emoji" x="270" y="62" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+    <text class="node-label" x="270" y="82" text-anchor="middle" fill="#f97316">Analyze Plate</text>
+  </g>
+
+  <!-- Step 3: Draw Boxes -->
+  <g class="node" data-step="3" onclick="selectStep(3)">
+    <rect x="195" y="168" width="150" height="58" rx="12" fill="#38bdf810" stroke="#38bdf8" stroke-width="1.5"/>
+    <text class="step-num" x="205" y="180">3</text>
+    <text class="node-emoji" x="270" y="192" text-anchor="middle" fill="#38bdf8">&#x1F441;&#xFE0F;</text>
+    <text class="node-label" x="270" y="212" text-anchor="middle" fill="#38bdf8">Draw Boxes</text>
+  </g>
+
+  <!-- Step 4: Classify Each Box -->
+  <g class="node" data-step="4" onclick="selectStep(4)">
+    <rect x="415" y="100" width="150" height="60" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+    <text class="step-num" x="425" y="112">4</text>
+    <text class="node-emoji" x="490" y="124" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+    <text class="node-label" x="490" y="146" text-anchor="middle" fill="#f97316">Classify Each Box</text>
+  </g>
+
+  <!-- Step 5: Remove Duplicates -->
+  <g class="node" data-step="5" onclick="selectStep(5)">
+    <rect x="630" y="100" width="150" height="60" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+    <text class="step-num" x="640" y="112">5</text>
+    <text class="node-emoji" x="705" y="124" text-anchor="middle" fill="#4ade80">&#x1F504;</text>
+    <text class="node-label" x="705" y="146" text-anchor="middle" fill="#4ade80" font-size="11.5">Remove Duplicates</text>
+  </g>
+
+  <!-- Step 6: Cut Precise Shapes -->
+  <g class="node" data-step="6" onclick="selectStep(6)">
+    <rect x="830" y="100" width="150" height="60" rx="12" fill="#38bdf810" stroke="#38bdf8" stroke-width="1.5"/>
+    <text class="step-num" x="840" y="112">6</text>
+    <text class="node-emoji" x="905" y="124" text-anchor="middle" fill="#38bdf8">&#x2702;&#xFE0F;</text>
+    <text class="node-label" x="905" y="146" text-anchor="middle" fill="#38bdf8" font-size="11.5">Cut Precise Shapes</text>
+  </g>
+
+  <!-- Turn indicator -->
+  <text x="930" y="260" font-size="20" fill="#333" text-anchor="middle">&#x21B5;</text>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ROW 2 NODES — Refinement Phase (right to left)     -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- Step 7: Verify A vs B -->
+  <g class="node" data-step="7" onclick="selectStep(7)">
+    <rect x="830" y="350" width="150" height="60" rx="12" fill="#f9731610" stroke="#f97316" stroke-width="1.5"/>
+    <text class="step-num" x="840" y="362">7</text>
+    <text class="node-emoji" x="905" y="374" text-anchor="middle" fill="#f97316">&#x1F9E0;</text>
+    <text class="node-label" x="905" y="396" text-anchor="middle" fill="#f97316">Verify A vs B</text>
+  </g>
+
+  <!-- Step 8: Brightness Check -->
+  <g class="node" data-step="8" onclick="selectStep(8)">
+    <rect x="630" y="352" width="150" height="56" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+    <text class="step-num" x="640" y="364">8</text>
+    <text class="node-emoji" x="705" y="374" text-anchor="middle" fill="#4ade80">&#x1F4A1;</text>
+    <text class="node-label" x="705" y="394" text-anchor="middle" fill="#4ade80" font-size="11.5">Brightness Check</text>
+  </g>
+
+  <!-- Step 9: Color & Label -->
+  <g class="node" data-step="9" onclick="selectStep(9)">
+    <rect x="415" y="350" width="150" height="60" rx="12" fill="#4ade8010" stroke="#4ade80" stroke-width="1.5"/>
+    <text class="step-num" x="425" y="362">9</text>
+    <text class="node-emoji" x="490" y="374" text-anchor="middle" fill="#4ade80">&#x1F3A8;</text>
+    <text class="node-label" x="490" y="396" text-anchor="middle" fill="#4ade80">Color &amp; Label</text>
+  </g>
+
+  <!-- Done indicator -->
+  <text x="400" y="385" font-size="14" fill="#4ade80" text-anchor="end" opacity="0.6">&#x2714; done</text>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ANIMATED PARTICLES                                  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+
+  <!-- Particles on path 1→2 (orange) -->
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="0s"><mpath href="#path-1-2"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.25s"><mpath href="#path-1-2"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 1→3 (blue) -->
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="0s"><mpath href="#path-1-3"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.25s"><mpath href="#path-1-3"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 2→4 (orange) -->
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s"><mpath href="#path-2-4"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.55s"><mpath href="#path-2-4"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 3→4 (blue) -->
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s"><mpath href="#path-3-4"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.55s"><mpath href="#path-3-4"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 4→5 (green) -->
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.5s"><mpath href="#path-4-5"/></animateMotion>
+  </circle>
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="1.5s"><mpath href="#path-4-5"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 5→6 (blue) -->
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.6s"><mpath href="#path-5-6"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#38bdf8" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="1.6s"><mpath href="#path-5-6"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 6→7 (orange, going down) -->
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="0.7s"><mpath href="#path-6-7"/></animateMotion>
+  </circle>
+  <circle class="particle" r="4" fill="#f97316" filter="url(#particleGlow)">
+    <animateMotion dur="3s" repeatCount="indefinite" begin="2.2s"><mpath href="#path-6-7"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 7→8 (green, going left) -->
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.8s"><mpath href="#path-7-8"/></animateMotion>
+  </circle>
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="1.8s"><mpath href="#path-7-8"/></animateMotion>
+  </circle>
+
+  <!-- Particles on path 8→9 (green, going left) -->
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.9s"><mpath href="#path-8-9"/></animateMotion>
+  </circle>
+  <circle class="particle" r="3" fill="#4ade80" filter="url(#particleGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="1.9s"><mpath href="#path-8-9"/></animateMotion>
+  </circle>
+
+</svg>
+</div>
+
+
+<div id="detail">
+  <div class="icon" id="d-icon"></div>
+  <div class="name" id="d-name">Click any step to see how it works</div>
+  <div class="desc" id="d-desc"></div>
+</div>
+
+<script>
+// ── Step data ──────────────────────────────────────────
+const stepData = {
+  1: { icon: "\u{1F4F7}", name: "Upload Photo",
+       desc: "You upload a photo of your meal. That\u2019s it \u2014 one photo, and the pipeline does the rest." },
+  2: { icon: "\u{1F9E0}", name: "Analyze Plate",
+       desc: "What\u2019s on this plate, and how good is it for you? The Brain looks at the whole plate in one pass \u2014 names every dish and rates it on five scales: how healthy, how satiating, how bloating, how tasty, and how addictive. No item-by-item work yet; this is the big-picture read." },
+  3: { icon: "\u{1F441}\uFE0F", name: "Draw Boxes",
+       desc: "Where is everything? The Eyes scan the entire image and draw tight boxes around every object they find. They don\u2019t know what\u2019s food and what isn\u2019t \u2014 a fork, a bowl, and a pile of rice all get boxes. The sorting happens next." },
+  4: { icon: "\u{1F9E0}", name: "Classify Each Box",
+       desc: "The Eyes found a dozen things \u2014 but which of those are actually food? The Brain examines each box alongside the full plate. It makes a visual judgment: does this box isolate one food item, or is it junk like a fork handle or a plate rim? The Brain also receives the box\u2019s size relative to the whole image \u2014 not as a rule, but as context. A box covering most of the image is obviously just the whole photo again, so those are skipped before the Brain even sees them." },
+  5: { icon: "\u{1F504}", name: "Remove Duplicates",
+       desc: "Did the Eyes draw two boxes on the same thing? If two boxes share more than half their area and have the same name, keep the tighter one. Two of the same food item in different locations both survive \u2014 only overlapping duplicates on the same item get collapsed. This prevents redundancy." },
+  6: { icon: "\u2702\uFE0F", name: "Cut Precise Shapes",
+       desc: "Now the Scissors take over. For each surviving box, they trace the exact edges of whatever object is inside \u2014 not a rough rectangle, but a pixel-level outline. The Scissors don\u2019t know what they\u2019re cutting; they\u2019re trained to segment any object you point them at. They analyze the full image once upfront, then produce three candidate outlines per box. The one with the highest confidence score is selected." },
+  7: { icon: "\u{1F9E0}", name: "Verify A vs B",
+       desc: "The Scissors cut something out \u2014 but did they cut the right thing? Sometimes they trace the bowl instead of the food inside it. So the Brain gets a second opinion: it sees two images side by side \u2014 the cut-out region (A) and everything around it (B), both on black backgrounds. It picks which one is actually the food item. When the Brain says \u201Cwrong cut,\u201D the Scissors don\u2019t redo the entire image \u2014 they only flip their work inside that one box." },
+  8: { icon: "\u{1F4A1}", name: "Brightness Check",
+       desc: "Is there actually something here? The selected region is checked for visible content \u2014 specifically, at least 100 pixels need to be brighter than a minimum threshold. If the cut-out is too dark, it\u2019s likely not a food item. The item is quietly dropped." },
+  9: { icon: "\u{1F3A8}", name: "Color & Label",
+       desc: "Food items correctly identified by the Brain, seen by the Eyes, and cut by the Scissors are shown with colorful masks and labels." }
+};
+
+// ── Node selection ─────────────────────────────────────
+let selectedStep = null;
+
+function selectStep(n) {
+  document.querySelectorAll('.node rect').forEach(r => {
+    r.setAttribute('stroke-width', '1.5');
+    r.removeAttribute('filter');
+  });
+
+  selectedStep = n;
+  const s = stepData[n];
+
+  const node = document.querySelector('.node[data-step="' + n + '"] rect');
+  if (node) {
+    node.setAttribute('stroke-width', '3');
+    node.setAttribute('filter', 'url(#nodeGlow)');
+  }
+
+  document.getElementById('d-icon').textContent = s.icon;
+  document.getElementById('d-name').textContent = s.name;
+  document.getElementById('d-desc').textContent = s.desc;
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's on your Plate?</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>What's on your Plate?</h1>
+      <p class="subtitle">GPT-4o + YOLOv8 + SAM &mdash; LLM-driven food analysis</p>
+    </header>
+
+    <!-- Upload zone -->
+    <div id="upload-zone" class="upload-zone">
+      <div class="upload-content">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <p>Drop a food image here or <span class="browse">browse</span></p>
+        <p class="hint">JPG, PNG &mdash; Indian cuisine works best</p>
+      </div>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+
+    <!-- Preview + Spinner -->
+    <div id="preview-section" class="preview-section hidden">
+      <img id="preview-img" class="preview-img" alt="Your uploaded plate">
+      <div class="spinner-inline">
+        <div class="spinner-ring"></div>
+        <p>Analyzing your plate&hellip;</p>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="results hidden">
+      <img id="annotated-img" class="annotated-img" alt="Annotated plate">
+      <p id="description" class="description"></p>
+      <div class="chart-section">
+        <h2 class="chart-title">Meal Fingerprint</h2>
+        <div class="chart-wrapper">
+          <canvas id="radar-chart"></canvas>
+        </div>
+      </div>
+      <div id="items" class="items"></div>
+      <button id="reset-btn" class="reset-btn">Analyze another plate</button>
+    </div>
+  </div>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
